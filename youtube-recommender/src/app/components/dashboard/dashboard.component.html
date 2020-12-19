@@ -1,0 +1,66 @@
+<div class="container-fluid">
+  <div class="container">
+    <mat-form-field [ngClass]="results.length > 0 ? '' : 'centered'">
+      <mat-label>Search</mat-label>
+      <input matInput placeholder="Ex. Cat Videos" [(ngModel)]="query" (keyup.enter)="onSearch()">
+      <button mat-icon-button matSuffix (click)="onSearch()" [attr.aria-label]="'Search'">
+        <mat-icon matSuffix>search</mat-icon>
+      </button>
+    </mat-form-field>
+    <div class="row" *ngIf="results.length > 0">
+      <div *ngFor="let result of results">
+        <div class="m-md-4 mb-sm-5 mt-sm-4">
+          <mat-card>
+            <mat-card-header class="mb-3">
+              <mat-card-title>
+                <a [href]="getLink(result.id)" target="_blank">{{result.snippet.title}}</a>
+              </mat-card-title>
+              <mat-card-subtitle class="m-md-3">
+                <div class="row">
+                  <div class="col-md-3 offset-md-1 col-sm-12 text-center">
+                    <span>{{result.snippet.channelTitle}}</span>
+                  </div>
+                  <div class="col-md-3 offset-md-1 col-sm-12 text-center">
+                    <span><fa-icon [icon]="calendar"></fa-icon> {{getPublishedAt(result.snippet.publishedAt)}} </span>
+                  </div>
+                  <div class="col-md-3 offset-md-1 col-sm-12 text-center">
+                    <span><fa-icon [icon]="clock"></fa-icon> {{getDuration(result.contentDetails.duration)}} </span>
+                  </div>
+                </div>
+              </mat-card-subtitle>
+            </mat-card-header>
+            <div class="col-md-4 offset-md-4">
+              <img mat-card-image [src]="result.snippet.thumbnails.high.url"
+                   height="250px"
+                   alt="Thumbnail of Video">
+            </div>
+            <mat-card-content>
+              <p>
+                {{getDescription(result.snippet.description)}}
+              </p>
+            </mat-card-content>
+            <mat-card-actions>
+              <div class="row">
+                <div class="col-md-3 offset-md-1 col-sm-12 text-center">
+                  <span><fa-icon [icon]="likeIcon"></fa-icon>
+                    {{abbreviateNumber(result.statistics.likeCount)}}</span>
+                </div>
+                <div class="col-md-3 offset-md-1 col-sm-12 text-center">
+                  <span><fa-icon [icon]="dislikeIcon"></fa-icon>
+                    {{abbreviateNumber(result.statistics.dislikeCount)}}</span>
+                </div>
+                <div class="col-md-3 offset-md-1 col-sm-12 text-center">
+                  <span><fa-icon [icon]="viewIcon"></fa-icon>
+                    {{abbreviateNumber(result.statistics.viewCount)}}</span>
+                </div>
+              </div>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+

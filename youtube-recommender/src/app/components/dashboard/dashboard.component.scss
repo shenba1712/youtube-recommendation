@@ -1,0 +1,30 @@
+mat-form-field {
+  width: 100%;
+  border-color: black;
+}
+
+.container {
+  width: 100%;
+  background-color: white;
+  color: black;
+  padding: 15px;
+  word-wrap: break-word !important;
+}
+
+mat-card {
+  width: 1000px;
+}
+
+.centered {
+  margin-top: 30%;
+}
+
+@media screen and (max-width: 467px) {
+  mat-card {
+    width: 300px;
+  }
+
+  .centered {
+    margin-top: 60%;
+  }
+}
