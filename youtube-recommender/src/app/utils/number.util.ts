@@ -3,6 +3,10 @@ export class NumberUtil {
   static abbreviateNumber(number){
     const SI_SYMBOL = ["", "k", "M", "B", "T", "P", "E"];
 
+    if (number === undefined || number === null || number === '') {
+      return 0;
+    }
+
     // what tier? (determines SI symbol)
     var tier = Math.log10(number) / 3 | 0;
 

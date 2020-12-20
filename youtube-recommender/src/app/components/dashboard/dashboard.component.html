@@ -1,66 +1,88 @@
 <div class="container-fluid">
   <div class="container">
-    <mat-form-field [ngClass]="results.length > 0 ? '' : 'centered'">
-      <mat-label>Search</mat-label>
-      <input matInput placeholder="Ex. Cat Videos" [(ngModel)]="query" (keyup.enter)="onSearch()">
-      <button mat-icon-button matSuffix (click)="onSearch()" [attr.aria-label]="'Search'">
-        <mat-icon matSuffix>search</mat-icon>
-      </button>
-    </mat-form-field>
-    <div class="row" *ngIf="results.length > 0">
-      <div *ngFor="let result of results">
-        <div class="m-md-4 mb-sm-5 mt-sm-4">
-          <mat-card>
-            <mat-card-header class="mb-3">
-              <mat-card-title>
-                <a [href]="getLink(result.id)" target="_blank">{{result.snippet.title}}</a>
-              </mat-card-title>
-              <mat-card-subtitle class="m-md-3">
-                <div class="row">
-                  <div class="col-md-3 offset-md-1 col-sm-12 text-center">
-                    <span>{{result.snippet.channelTitle}}</span>
-                  </div>
-                  <div class="col-md-3 offset-md-1 col-sm-12 text-center">
-                    <span><fa-icon [icon]="calendar"></fa-icon> {{getPublishedAt(result.snippet.publishedAt)}} </span>
-                  </div>
-                  <div class="col-md-3 offset-md-1 col-sm-12 text-center">
-                    <span><fa-icon [icon]="clock"></fa-icon> {{getDuration(result.contentDetails.duration)}} </span>
-                  </div>
-                </div>
-              </mat-card-subtitle>
-            </mat-card-header>
-            <div class="col-md-4 offset-md-4">
-              <img mat-card-image [src]="result.snippet.thumbnails.high.url"
-                   height="250px"
-                   alt="Thumbnail of Video">
-            </div>
-            <mat-card-content>
-              <p>
-                {{getDescription(result.snippet.description)}}
-              </p>
-            </mat-card-content>
-            <mat-card-actions>
-              <div class="row">
+    <mat-spinner *ngIf="loading"></mat-spinner>
+    <ng-container *ngIf="error">
+      <mat-card class="alert-danger">
+        <div *ngIf="errorCode === 403; else unexpectedError;">
+          <h3>
+            You have exceeded your trial quota. Please try again tomorrow!
+          </h3>
+        </div>
+
+        <ng-template #unexpectedError>
+          <h3>
+            An unexpected error occured. Please try later!
+          </h3>
+        </ng-template>
+      </mat-card>
+    </ng-container>
+
+
+    <ng-container *ngIf="!loading">
+      <mat-form-field [ngClass]="results.length > 0 ? '' : 'centered'">
+        <mat-label>Search</mat-label>
+        <input matInput placeholder="Ex. Cat Videos" [(ngModel)]="query" (keyup.enter)="onSearch()">
+        <button mat-icon-button matSuffix (click)="onSearch()" [attr.aria-label]="'Search'">
+          <mat-icon matSuffix>search</mat-icon>
+        </button>
+      </mat-form-field>
+      <div class="row" *ngIf="results.length > 0">
+        <div *ngFor="let result of results" class="mb-sm-4">
+          <div class="m-md-4 mb-sm-5 mt-sm-4">
+            <mat-card>
+              <mat-card-header class="mb-3">
+                <mat-card-title>
+                  <a target="_blank" [attr.href]="getVideoLink(result.id)" (click)="play(result.id, result.snippet.title)">{{result.snippet.title}}</a>
+                </mat-card-title>
+              </mat-card-header>
+              <div class="row m-3">
                 <div class="col-md-3 offset-md-1 col-sm-12 text-center">
-                  <span><fa-icon [icon]="likeIcon"></fa-icon>
-                    {{abbreviateNumber(result.statistics.likeCount)}}</span>
+                  <a [href]="getChannelLink(result.snippet.channelId)" target="_blank">
+                    <h4>{{result.snippet.channelTitle}}</h4>
+                  </a>
                 </div>
                 <div class="col-md-3 offset-md-1 col-sm-12 text-center">
-                  <span><fa-icon [icon]="dislikeIcon"></fa-icon>
-                    {{abbreviateNumber(result.statistics.dislikeCount)}}</span>
+                  <h4><fa-icon [icon]="calendar"></fa-icon> {{getPublishedAt(result.snippet.publishedAt)}} </h4>
                 </div>
                 <div class="col-md-3 offset-md-1 col-sm-12 text-center">
-                  <span><fa-icon [icon]="viewIcon"></fa-icon>
-                    {{abbreviateNumber(result.statistics.viewCount)}}</span>
+                  <h4><fa-icon [icon]="clock"></fa-icon> {{getDuration(result.contentDetails.duration)}} </h4>
                 </div>
               </div>
-            </mat-card-actions>
-          </mat-card>
+              <div class="col-md-4 offset-md-4 mt-5">
+                <a target="_blank" [attr.href]="getVideoLink(result.id)" (click)="play(result.id, result.snippet.title)">
+                  <img mat-card-image [src]="result.snippet.thumbnails.high.url"
+                       height="250px"
+                       alt="Thumbnail of Video">
+                </a>
+              </div>
+              <mat-card-content>
+                <p>
+                  {{getDescription(result.snippet.description)}}
+                </p>
+              </mat-card-content>
+              <mat-card-actions>
+                <div class="row">
+                  <div class="col-md-3 offset-md-1 col-sm-12 text-center">
+                  <span><fa-icon [icon]="likeIcon"></fa-icon>
+                    {{abbreviateNumber(result.statistics.likeCount)}}</span>
+                  </div>
+                  <div class="col-md-3 offset-md-1 col-sm-12 text-center">
+                  <span><fa-icon [icon]="dislikeIcon"></fa-icon>
+                    {{abbreviateNumber(result.statistics.dislikeCount)}}</span>
+                  </div>
+                  <div class="col-md-3 offset-md-1 col-sm-12 text-center">
+                  <span><fa-icon [icon]="viewIcon"></fa-icon>
+                    {{abbreviateNumber(result.statistics.viewCount)}}</span>
+                  </div>
+                </div>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+
         </div>
 
       </div>
-
-    </div>
+    </ng-container>
   </div>
 </div>
 

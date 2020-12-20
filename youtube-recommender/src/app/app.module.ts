@@ -15,11 +15,15 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { YoutubeService } from "./service/youtube.service";
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatCardModule } from "@angular/material/card";
+import {YouTubePlayerModule} from "@angular/youtube-player";
+import { PlayerDialogComponent } from './components/player-dialog/player-dialog.component';
+import { MatDialogModule } from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
     AppComponent,
-    DashboardComponent
+    DashboardComponent,
+    PlayerDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -34,10 +38,13 @@ import { MatCardModule } from "@angular/material/card";
     MatIconModule,
     MatCardModule,
     MatProgressSpinnerModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    YouTubePlayerModule,
+    MatDialogModule
   ],
   providers: [
-    YoutubeService
+    YoutubeService,
+    { provide: Window, useValue: window }
   ],
   bootstrap: [AppComponent]
 })

@@ -13,9 +13,18 @@ mat-form-field {
 
 mat-card {
   width: 1000px;
+
+  mat-card-subtitle {
+    width: 100%;
+  }
 }
 
 .centered {
+  margin-top: 30%;
+}
+
+mat-spinner {
+  left: 50%;
   margin-top: 30%;
 }
 
@@ -27,4 +36,14 @@ mat-card {
   .centered {
     margin-top: 60%;
   }
+}
+
+a {
+  color: black !important;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.alert-danger {
+  width: 100%;
 }

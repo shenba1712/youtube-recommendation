@@ -8,7 +8,7 @@ export class TimeFormatUtil {
 
     if (diff < (60 * 60 * 24)) {
       return 'Today';
-    } else if (diff < (60 * 60 * 24 * 7)) {
+    } else if (diff < (60 * 60 * 24 * 30)) {
       return Math.floor(diff / (60 * 60 * 24)) + ' days ago';
     } else if (diff < (60 * 60 * 24 * 365)) {
       let time = Math.floor(diff / (60 * 60 * 24 * 30));
