@@ -5,4 +5,4 @@ Youtube has millions of videos and one spends hours trying to find the best vide
 The application is created using Angular 11. It uses Bootstrap and Angular Material as UI frameworks.
 
 # Recommendation Considerations
-The recommendation logic is based on the number of views, like/dislike ratio, views/subscribers ratio and the published date.
+The recommendation logic is based on the number of views, like/view ratio, views/subscribers ratio and the published date.
