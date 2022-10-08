@@ -55,7 +55,7 @@ export class YoutubeService {
     let params: HttpParams = new HttpParams()
       .set('key', this.key)
       .set('part', 'snippet')
-      .set('maxResults', '10')
+      .set('maxResults', '25')
       .set('order', 'relevance')
       .set('q', query)
       .set('regionCode', 'DE');

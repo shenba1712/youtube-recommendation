@@ -1,30 +1,38 @@
 import {Video} from "../models/video/video.model";
+import {Statistics} from "../models/video/statistics.model";
 
 export class RankingUtil {
   static rankVideos(videos: Video[]): Video[] {
-    let maxEntries =  videos.length > 5 ? 5 : videos.length;
+    let maxEntries =  videos.length > 10 ? 10 : videos.length;
     let today: any = new Date();
     videos.forEach(video => {
-      if (video.statistics && video.statistics.viewCount > 5000 ) {
+      let stats = video.statistics;
+      if (stats && this.chooseVideo(stats)) {
         if (video.snippet) {
           let publishedDate: any = Date.parse(video.snippet.publishedAt);
           let diff = Math.floor((today - publishedDate) / (1000 * 60 * 60 * 24));
-          let viewSubscriptionRatio = video.statistics.viewCount / video.statistics.subscriberCount;
-          let likeDislikeRatio = video.statistics.likeCount / video.statistics.dislikeCount;
-          video.customScore = this.rank(video.statistics.viewCount, viewSubscriptionRatio, likeDislikeRatio, diff);
+          let viewSubscriptionRatio = stats.viewCount / stats.subscriberCount;
+          let likeViewRatio = stats.likeCount / stats.viewCount;
+          video.customScore = this.rank(stats.viewCount, viewSubscriptionRatio, likeViewRatio, diff);
         }
       }
     });
-    return videos.sort((a, b) => b.customScore - a.customScore).slice(0, maxEntries);
+
+    videos = videos.filter(video => !!video.customScore)
+      .sort((a, b) => b.customScore - a.customScore)
+      .slice(0, maxEntries);
+    return videos;
   }
 
-  private static rank(viewCount: number, viewSubscriptionRatio: number, likeDislikeRatio: number, days: number) {
-    if (viewSubscriptionRatio > 5) {
-      viewSubscriptionRatio = 5;
+  private static chooseVideo(videoStatistics: Statistics): boolean {
+    return videoStatistics.viewCount >= 7500 && videoStatistics.likeCount >= 500;
+  }
+
+  private static rank(viewCount: number, viewSubscriptionRatio: number, likeViewRatio: number, days: number): number {
+    if (days <= 365 * 3) {
+      return (viewCount * viewSubscriptionRatio * likeViewRatio) / days;
+    } else {
+      return undefined;
     }
-    if (likeDislikeRatio > 5) {
-      likeDislikeRatio = 5;
-    }
-    return (viewCount * viewSubscriptionRatio * likeDislikeRatio) / days;
   }
 }
