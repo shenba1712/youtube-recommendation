@@ -419,7 +419,9 @@ class YoutubeService {
                 params = params.set('nextPageToken', token);
             }
         }
-        return this.http.get(this.baseUrl + 'search', { params: params });
+        return this.http.get(this.baseUrl + 'search', { headers: {
+                referrerPolicy: "origin"
+            }, params: params });
     }
     getVideoStats(videoIds) {
         const params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpParams"]()
