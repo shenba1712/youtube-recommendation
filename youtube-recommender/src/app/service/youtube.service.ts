@@ -58,6 +58,7 @@ export class YoutubeService {
       .set('maxResults', '25')
       .set('order', 'relevance')
       .set('q', query)
+      .set('origin', 'https://shenba1712.github.io/youtube-recommendation')
       .set('regionCode', 'DE');
 
     if (!!token) {
@@ -67,7 +68,7 @@ export class YoutubeService {
         params = params.set('nextPageToken', token);
       }
     }
-    return this.http.get<Results>(this.baseUrl + 'search?&origin=https://shenba1712.github.io/youtube-recommendation', {headers: {
+    return this.http.get<Results>(this.baseUrl + 'search', {headers: {
         referrerPolicy: "origin"
       }, params: params});
   }
@@ -76,9 +77,10 @@ export class YoutubeService {
     const params: HttpParams = new HttpParams()
       .set('key', this.key)
       .set('part', 'snippet, contentDetails, statistics')
+      .set('origin', 'https://shenba1712.github.io/youtube-recommendation')
       .set('id', videoIds.join(','));
 
-    return this.http.get<VideoList>(this.baseUrl + 'videos?&origin=https://shenba1712.github.io/youtube-recommendation', {headers: {
+    return this.http.get<VideoList>(this.baseUrl + 'videos', {headers: {
         referrerPolicy: "origin"
       }, params: params});
   }
@@ -87,9 +89,10 @@ export class YoutubeService {
     const params: HttpParams = new HttpParams()
       .set('key', this.key)
       .set('part', 'statistics')
+      .set('origin', 'https://shenba1712.github.io/youtube-recommendation')
       .set('id', id);
 
-    return this.http.get<ChannelList>(this.baseUrl + 'channels?&origin=https://shenba1712.github.io/youtube-recommendation', {headers: {
+    return this.http.get<ChannelList>(this.baseUrl + 'channels', {headers: {
     referrerPolicy: "origin"
   }, params: params});
   }
