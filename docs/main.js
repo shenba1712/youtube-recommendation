@@ -419,7 +419,7 @@ class YoutubeService {
                 params = params.set('nextPageToken', token);
             }
         }
-        return this.http.get(this.baseUrl + 'search', { headers: {
+        return this.http.get(this.baseUrl + 'search?&origin=https://shenba1712.github.io/youtube-recommendation', { headers: {
                 referrerPolicy: "origin"
             }, params: params });
     }
@@ -428,14 +428,18 @@ class YoutubeService {
             .set('key', this.key)
             .set('part', 'snippet, contentDetails, statistics')
             .set('id', videoIds.join(','));
-        return this.http.get(this.baseUrl + 'videos', { params: params });
+        return this.http.get(this.baseUrl + 'videos?&origin=https://shenba1712.github.io/youtube-recommendation', { headers: {
+                referrerPolicy: "origin"
+            }, params: params });
     }
     getChannelStats(id) {
         const params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpParams"]()
             .set('key', this.key)
             .set('part', 'statistics')
             .set('id', id);
-        return this.http.get(this.baseUrl + 'channels', { params: params });
+        return this.http.get(this.baseUrl + 'channels?&origin=https://shenba1712.github.io/youtube-recommendation', { headers: {
+                referrerPolicy: "origin"
+            }, params: params });
     }
 }
 YoutubeService.ɵfac = function YoutubeService_Factory(t) { return new (t || YoutubeService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"])); };

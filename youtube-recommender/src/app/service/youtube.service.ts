@@ -67,7 +67,7 @@ export class YoutubeService {
         params = params.set('nextPageToken', token);
       }
     }
-    return this.http.get<Results>(this.baseUrl + 'search', {headers: {
+    return this.http.get<Results>(this.baseUrl + 'search?&origin=https://shenba1712.github.io/youtube-recommendation', {headers: {
         referrerPolicy: "origin"
       }, params: params});
   }
@@ -78,7 +78,9 @@ export class YoutubeService {
       .set('part', 'snippet, contentDetails, statistics')
       .set('id', videoIds.join(','));
 
-    return this.http.get<VideoList>(this.baseUrl + 'videos', {params: params});
+    return this.http.get<VideoList>(this.baseUrl + 'videos?&origin=https://shenba1712.github.io/youtube-recommendation', {headers: {
+        referrerPolicy: "origin"
+      }, params: params});
   }
 
   private getChannelStats(id: string): Observable<ChannelList> {
@@ -87,6 +89,8 @@ export class YoutubeService {
       .set('part', 'statistics')
       .set('id', id);
 
-    return this.http.get<ChannelList>(this.baseUrl + 'channels', {params: params});
+    return this.http.get<ChannelList>(this.baseUrl + 'channels?&origin=https://shenba1712.github.io/youtube-recommendation', {headers: {
+    referrerPolicy: "origin"
+  }, params: params});
   }
 }
