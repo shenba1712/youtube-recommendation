@@ -67,7 +67,9 @@ export class YoutubeService {
         params = params.set('nextPageToken', token);
       }
     }
-    return this.http.get<Results>(this.baseUrl + 'search', {params: params});
+    return this.http.get<Results>(this.baseUrl + 'search', {headers: {
+        referrerPolicy: "origin"
+      }, params: params});
   }
 
   private getVideoStats(videoIds: string[]): Observable<VideoList> {
